@@ -91,17 +91,6 @@
 (global-set-key (kbd "<C-prior>") 'next-buffer)
 (global-set-key (kbd "<C-next>") 'previous-buffer)
 (global-set-key (kbd "C-o") 'find-file-at-point)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+(global-set-key (kbd "M-.") 'xgtags-find-tag)
+(global-set-key (kbd "C-.") 'xgtags-find-tag-from-here)
+(global-set-key (kbd "C-.") 'xgtags-find-with-grep)
