@@ -27,43 +27,45 @@
 (global-ede-mode t)
 
 ;(semantic-load-enable-minimum-features)
-;(semantic-load-enable-code-helpers)
+(semantic-load-enable-code-helpers)
 ;(semantic-load-enable-guady-code-helpers)
-(semantic-load-enable-excessive-code-helpers)
-(semantic-load-enable-semantic-debugging-helpers)
+;(semantic-load-enable-excessive-code-helpers)
+;(semantic-load-enable-semantic-debugging-helpers)
 ;(semantic-show-unmatched-syntax-mode)
 ;;;end cedet
 
 
 ;;;ecb
-;(add-to-list load-path (concat user-specific-dir "/ect"))
-;(require 'ecb)
-;(global-set-key (kbd "C-c w a") 'ecb-activate)
-;(global-set-key (kbd "C-c w u") 'ecb-deactivate)
+(add-to-list 'load-path
+             (concat dotfiles-dir  "mqnuiawx/ecb"))
+
+(require 'ecb)
+(global-set-key (kbd "C-c w a") 'ecb-activate)
+(global-set-key (kbd "C-c w u") 'ecb-deactivate)
 ;;;end ecb
 
 
 ;;;jdee
-(setq debug-on-error t)
+;; (setq debug-on-error t)
 
-(add-to-list 'load-path (expand-file-name "~/emacs/site/cedet/common"))
-(add-to-list 'load-path (expand-file-name "~/emacs/site/elib"))
+;; (add-to-list 'load-path (expand-file-name "~/emacs/site/cedet/common"))
+;; (add-to-list 'load-path (expand-file-name "~/emacs/site/elib"))
 
-(setq defer-loading-jde t)
+;; (setq defer-loading-jde t)
 
-(if defer-loading-jde
-    (progn
-      (autoload 'jde-mode "jde" "JDE mode." t)
-      (setq auto-mode-alist
-	    (append
-	     '(("\\.java\\'" . jde-mode))
-	     auto-mode-alist)))
-  (require 'jde))
+;; (if defer-loading-jde
+;;     (progn
+;;       (autoload 'jde-mode "jde" "JDE mode." t)
+;;       (setq auto-mode-alist
+;; 	    (append
+;; 	     '(("\\.java\\'" . jde-mode))
+;; 	     auto-mode-alist)))
+;;   (require 'jde))
 
-(defun my-jde-mode-hook ()
-  (setq c-basic-offset 4))
+;; (defun my-jde-mode-hook ()
+;;   (setq c-basic-offset 4))
 
-(add-hook 'jde-mode-hook 'my-jde-mode-hook)
+;; (add-hook 'jde-mode-hook 'my-jde-mode-hook)
 ;;;end jdee
 
 
@@ -75,6 +77,29 @@
 
 ;;;highlight-symbol
 (require 'highlight-symbol)
+
+;;;tabbar
+(require 'tabbar)
+(tabbar-mode 1)
+(setq EmacsPortable-global-tabbar 't) ; If you want tabbar
+
+(require 'tabbar-ruler)
+(defun tabbar-buffer-groups (buffer)
+  "Return the list of group names BUFFER belongs to.
+ Return only one group for each buffer."
+  (with-current-buffer (get-buffer buffer)
+    (cond
+     ((string-equal "*" (substring (buffer-name) 0 1))
+      '("Emacs Buffer"))
+     ((eq major-mode 'dired-mode)
+      '("Dired"))
+     )))
+
+;(setq tabbar--buffer-show-groups t)
+ ;; from Xah Lee
+;(setq tabbar-buffer-groups-function 'tabbar-buffer-groups)
+;;;tabbar end
+
 
 (global-set-key [(control f3)] 'highlight-symbol-at-point)
 (global-set-key [f3] 'highlight-symbol-next)
@@ -93,4 +118,6 @@
 (global-set-key (kbd "C-o") 'find-file-at-point)
 (global-set-key (kbd "M-.") 'xgtags-find-tag)
 (global-set-key (kbd "C-.") 'xgtags-find-tag-from-here)
-(global-set-key (kbd "C-.") 'xgtags-find-with-grep)
+(global-set-key (kbd "C-,") 'xgtags-find-with-grep)
+(global-set-key (kbd "M-,") 'xgtags-pop-stack)
+
