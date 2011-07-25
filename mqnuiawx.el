@@ -2,7 +2,8 @@
 
 ;;;color
 (require 'color-theme)
-(color-theme-twilight)
+(require 'color-theme-railscasts)
+(color-theme-railscasts)
 ;;;end color
 
 (defun count-word-region (start end)
@@ -99,6 +100,47 @@
  ;; from Xah Lee
 ;(setq tabbar-buffer-groups-function 'tabbar-buffer-groups)
 ;;;tabbar end
+
+;;
+
+(add-to-list 'load-path (concat dotfiles-dir  "mqnuiawx/python-mode-6.0"))
+
+(require 'python-mode)
+(require 'ipython)
+
+
+(add-hook 'python-mode-hook #'lambda-mode 1)
+(setq lambda-symbol (string (make-char 'greek-iso8859-7 107)))
+
+
+(require 'anything)
+(require 'anything-ipython)
+(when (require 'anything-show-completion nil t)
+   (use-anything-show-completion 'anything-ipython-complete
+                                 '(length initial-pattern)))
+
+(require 'comint)
+(define-key comint-mode-map (kbd "M-") 'comint-next-input)
+(define-key comint-mode-map (kbd "M-") 'comint-previous-input)
+(define-key comint-mode-map [down] 'comint-next-matching-input-from-input)
+(define-key comint-mode-map [up] 'comint-previous-matching-input-from-input)
+
+(add-hook 'lisp-mode-hook
+          #'(lambda () (setq autopair-dont-activate t)))
+(add-hook 'python-mode-hook
+          #'(lambda ()
+              (push '(?' . ?')
+                    (getf autopair-extra-pairs :code))
+              (setq autopair-handle-action-fns
+                    (list #'autopair-default-handle-action
+                          #'autopair-python-triple-quote-action))))
+
+(require 'python-pep8)
+(require 'python-pylint)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+(require 'yasnippet-bundle)
+(require 'pretty-mode)
 
 
 (global-set-key [(control f3)] 'highlight-symbol-at-point)
