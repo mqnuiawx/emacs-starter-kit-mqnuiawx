@@ -1,10 +1,5 @@
 
 
-;;;color
-(require 'color-theme)
-(require 'color-theme-railscasts)
-(color-theme-railscasts)
-;;;end color
 
 (defun count-word-region (start end)
   "Count the word number of a region."
@@ -103,25 +98,33 @@
 
 ;;
 
+
+;;; python mode
 (add-to-list 'load-path (concat dotfiles-dir  "mqnuiawx/python-mode-6.0"))
 
-(require 'python-mode)
+
+(setq ipython-command "/usr/bin/ipython")
+(setq py-python-command-args '(""))
+;(require 'python-mode)
 (require 'ipython)
 
-
-(add-hook 'python-mode-hook #'lambda-mode 1)
-(setq lambda-symbol (string (make-char 'greek-iso8859-7 107)))
-
-
 (require 'anything)
+(require 'anything-config)
 (require 'anything-ipython)
 (when (require 'anything-show-completion nil t)
    (use-anything-show-completion 'anything-ipython-complete
                                  '(length initial-pattern)))
+;;; autopair
+(require 'autopair)
+(autoload 'autopair-global-mode "autopair" nil t)
+(autopair-global-mode t)
+(add-hook 'lisp-mode-hook
+          #'(lambda () (setq autopair-dont-activate t)))
+;;; end autopair
 
 (require 'comint)
-(define-key comint-mode-map (kbd "M-") 'comint-next-input)
-(define-key comint-mode-map (kbd "M-") 'comint-previous-input)
+(define-key comint-mode-map (kbd "M-n") 'comint-next-input)
+(define-key comint-mode-map (kbd "M-p") 'comint-previous-input)
 (define-key comint-mode-map [down] 'comint-next-matching-input-from-input)
 (define-key comint-mode-map [up] 'comint-previous-matching-input-from-input)
 
@@ -142,6 +145,36 @@
 (require 'yasnippet-bundle)
 (require 'pretty-mode)
 
+
+;;; pretty show
+
+;;color theme
+(require 'color-theme)
+(require 'color-theme-railscasts)
+(color-theme-railscasts)
+;;end color
+
+;; pretty lambda
+(add-hook 'python-mode-hook #'lambda-mode 1)
+(setq lambda-symbol (string (make-char 'greek-iso8859-7 107)))
+;; end pretty lambda
+
+
+;; Hide display of parens
+(defface paren-face
+  '((((class color) (background dark))
+     (:foreground "grey20"))
+    (((class color) (background light))
+     (:foreground "grey80")))
+  "Face used to dim parentheses.")
+
+(add-hook 'emacs-lisp-mode-hook
+ 	  (lambda ()
+ 	    (font-lock-add-keywords nil
+ 				    '(("(\\|)" . 'paren-face)))))
+;; end Hide display of parens
+
+;;; end pretty show
 
 (global-set-key [(control f3)] 'highlight-symbol-at-point)
 (global-set-key [f3] 'highlight-symbol-next)
